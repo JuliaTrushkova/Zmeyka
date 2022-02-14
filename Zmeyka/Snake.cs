@@ -1,19 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Zmeyka
+﻿namespace Zmeyka
 {
-    internal class Snake : ICompare
+    internal class Snake : ItemArray<Item>
     {
-        private SnakeItem[] _zmeykaItems;
-
-        //По умолчанию змейка создастся в верхнм левом углу
+        //По умолчанию змейка создастся в верхнем левом углу
         public Snake()
         {
-            _zmeykaItems = new[]
+            this._arrayT = new[]
             {
                 new SnakeItem('@', 1, 2),
                 new SnakeItem('#', 1, 1)
@@ -21,35 +13,12 @@ namespace Zmeyka
         }
 
         //Создание змейки в рандомной точке поля
-        public Snake(int randomX, int randomY)
+        public Snake(int poleSizeX, int poleSizeY)
         {
-            _zmeykaItems = new[]
-            {
-                new SnakeItem('@', randomX, randomY),
-                new SnakeItem('#', randomX, --randomY)
-            };
-        }
-
-        public int Count
-            => _zmeykaItems.Length;
-
-        public SnakeItem this[int index]
-        {
-            get
-            {
-                if (index>=0&& index<_zmeykaItems.Length)
-                    return _zmeykaItems[index];
-                else 
-                    throw new Exception("Index too much for snake");
-            }
-            set 
-            {
-                if (index >= 0 && index < _zmeykaItems.Length)
-                    _zmeykaItems[index] = value;
-                else
-                    throw new Exception("Index too much for snake");
-            }
-        }
+            this._arrayT = new Item[2];
+            this._arrayT[0] = new SnakeItem(poleSizeX, poleSizeY);
+            this._arrayT[1] = new SnakeItem('#', this._arrayT[0].X, this._arrayT[0].Y - 1);            
+        }    
 
         /* 
         <summary> 
@@ -58,10 +27,20 @@ namespace Zmeyka
         */
         public void AddItemToSnake(int newX, int newY, bool HasEaten)
         {
-            _zmeykaItems[0].Type = '#';
-            _zmeykaItems.Prepend(new SnakeItem('@', newX, newY));
+            //Добавление нового элемента
+            this._arrayT[0].Type = '#';
+            this._arrayT = this._arrayT.Prepend(new SnakeItem('@', newX, newY)).ToArray();
+            this._arrayT[0].ShowItem();
+            this._arrayT[1].ShowItem();
+            //Если змейка не ела, то после добавления нового элемента удаляем с конца элемент
             if (!HasEaten)
-                _zmeykaItems.SkipLast(1);
+            {
+                this._arrayT.Last().Type = ' ';
+                this._arrayT.Last().ShowItem();
+                this._arrayT = this._arrayT.SkipLast(1).ToArray();
+            }
         }
+
+
     }
 }
