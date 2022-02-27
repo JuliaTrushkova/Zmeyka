@@ -8,6 +8,7 @@ namespace Zmeyka
 {
     internal class Snake : ICompare
     {
+        private int timerInterval = 1000;
         private SnakeItem[] _zmeykaItems;
 
         //По умолчанию змейка создастся в верхнм левом углу
@@ -62,6 +63,25 @@ namespace Zmeyka
             _zmeykaItems.Prepend(new SnakeItem('@', newX, newY));
             if (!HasEaten)
                 _zmeykaItems.SkipLast(1);
+        }
+
+        public void Start()
+        {
+
+        }
+
+        private Item FindNextStep()
+        {
+            Item item = new Item();
+            int dx = _zmeykaItems[0].X - _zmeykaItems[1].X;
+            int dy = _zmeykaItems[0].Y - _zmeykaItems[1].Y;
+
+            return new Item();
+        }
+
+        public void Stop()
+        {
+
         }
     }
 }
