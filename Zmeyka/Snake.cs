@@ -2,9 +2,9 @@
 {
     internal class Snake : ItemArray<Item>
     {
-       
+        private int _timerInterval = 200;
 
-        //По умолчанию змейка создастся в верхнм левом углу
+        //По умолчанию змейка создастся в верхнем левом углу
         public Snake()
         {
             this._arrayT = new[]
@@ -21,6 +21,20 @@
             this._arrayT[0] = new SnakeItem(poleSizeX, poleSizeY);
             this._arrayT[1] = new SnakeItem('#', this._arrayT[0].X, this._arrayT[0].Y - 1);            
         }    
+
+        public int TimerInterval
+        {
+            get => _timerInterval;
+            set => _timerInterval = value;
+        }
+
+        public void ChangeTimeInterval()
+        {
+            if (_timerInterval >= 100)
+                _timerInterval = Convert.ToInt32(_timerInterval * 0.8);
+            if (_timerInterval < 100)
+                _timerInterval = 100;
+        }
 
         /* 
         <summary> 
@@ -42,7 +56,14 @@
                 this._arrayT = this._arrayT.SkipLast(1).ToArray();
             }
         }
+
+        public SnakeItem StepToDirection()
+        {            
+            int dx = this._arrayT[0].X - this._arrayT[1].X;
+            int dy = this._arrayT[0].Y - this._arrayT[1].Y;
+            
+            return new SnakeItem('@', this._arrayT[0].X + dx, this._arrayT[0].Y + dy);
+        }
     }
 }
-    }
-}
+    

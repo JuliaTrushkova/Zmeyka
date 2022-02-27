@@ -3,58 +3,63 @@ using System.Diagnostics;
 using System.Text;
 using Zmeyka;
 
-#pragma warning disable CA1416 // Validate platform compatibility
-Console.WindowHeight = 55;
-Console.WindowWidth = 115;
-#pragma warning restore CA1416 // Validate platform compatibility
 
-int poleSizeX = 100;
-int poleSizeY = 50;
+//Console.WindowHeight = 45;
+//Console.WindowWidth = 85;
+//Console.BufferHeight = Console.WindowHeight;
+//Console.BufferWidth = Console.WindowWidth;
 
-while (true)
+//int poleSizeX = Console.WindowWidth - 15;
+//int poleSizeY = Console.WindowHeight - 5;
+
+int poleSizeX = 80;
+int poleSizeY = 40;
+Console.WindowHeight = poleSizeY;
+Console.WindowWidth = poleSizeX;
+
+try
 {
-    Console.Clear();
-
-    Game newGame = new Game(poleSizeX, poleSizeY);
-    newGame.ShowGameArea();
-
-    Console.SetCursorPosition(0, 50);
-
-    int sourceTop = newGame.Snake[0].Y;
-    int sourceLeft = newGame.Snake[0].X;
-    Item newStep = new Item(' ', sourceLeft, sourceTop);
-    try
+    while (true)
     {
+        Console.Clear();
 
-        while (true)
+        Game newGame = new Game(poleSizeX, poleSizeY);
+        newGame.ShowGameArea();
+
+        Console.SetCursorPosition(0, 0);
+
+        int sourceTop = newGame.Snake[0].Y;
+        int sourceLeft = newGame.Snake[0].X;
+        Item newStep = new Item(' ', sourceLeft, sourceTop);
+        try
         {
-            newStep = GamePlay.Step(newStep.X, newStep.Y);
-
-            if (newGame.Snake.Contains(newStep) || newGame.PoleGame.Contains(newStep))
-                throw new Exception("GAME OVER");
-            else if (newGame.EatPiece.Equal(newStep))
+           newGame.StartSnake();
+            while (true)
             {
-                newGame.Snake.AddItemToSnake(newStep.X, newStep.Y, true);
-                newGame.GetEatPeace(newGame.PoleGame.PoleSizeX, newGame.PoleGame.PoleSizeY);
-                newGame.EatPiece.ShowItem();
+                newStep = GamePlay.Step(newStep.X, newStep.Y);
+
+                newGame.WhatNewStep(newStep);
+               // newGame.HigherSpeedSnake();
             }
+        }
+        catch (Exception ex)
+        {
+            GamePlay.EndGame(ex.Message, newGame.PoleGame.PoleSizeX, newGame.PoleGame.PoleSizeY);
+            bool wantNewGame = GamePlay.QuitOrNewGame(newGame.PoleGame.PoleSizeX, newGame.PoleGame.PoleSizeY);
+            if (wantNewGame)
+                continue;
             else
-            {
-                newGame.Snake.AddItemToSnake(newStep.X, newStep.Y, false);
-            }
-
-            if (newGame.Snake.Count == newGame.PoleGame.PoleArea)
-                throw new Exception("YOU WIN"); 
+                break;
         }
     }
-    catch (Exception ex)
-    {        
-        GamePlay.EndGame(ex.Message, newGame.PoleGame.PoleSizeX, newGame.PoleGame.PoleSizeY);
-        bool wantNewGame = GamePlay.QuitOrNewGame(newGame.PoleGame.PoleSizeX, newGame.PoleGame.PoleSizeY);
-        if (wantNewGame)
-            continue;
-        else
-            break;
-    }
 }
-
+catch (Exception ex)
+{
+    //GamePlay.EndGame(ex.Message, newGame.PoleGame.PoleSizeX, newGame.PoleGame.PoleSizeY);
+    //bool wantNewGame = GamePlay.QuitOrNewGame(newGame.PoleGame.PoleSizeX, newGame.PoleGame.PoleSizeY);
+    //if (wantNewGame)
+    //    continue;
+    //else
+    //    break;
+    Console.WriteLine("ddd");
+}

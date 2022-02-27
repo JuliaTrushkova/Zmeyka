@@ -2,31 +2,35 @@
 {
     internal static class GamePlay
     {
+        private static object block = new object();
         //Получение координат ячейки, куда должна пойти змейка после нажатия кнопки
         public static Item Step(int sourceLeft, int sourceTop)
         {
-            ConsoleKeyInfo keyPress = Console.ReadKey();
-            switch (keyPress.Key)
+            lock (block)
             {
-                case ConsoleKey.DownArrow:
-                case ConsoleKey.S:
-                    ++sourceTop;
-                    break;
-                case ConsoleKey.RightArrow:
-                case ConsoleKey.D:
-                    ++sourceLeft;
-                    break;
-                case ConsoleKey.LeftArrow:
-                case ConsoleKey.A:
-                    --sourceLeft;
-                    break;
-                case ConsoleKey.UpArrow:
-                case ConsoleKey.W:
-                    --sourceTop;
-                    break;
-                case ConsoleKey.Escape:
-                    throw new Exception("_EXIT GAME");
-                    break;
+                ConsoleKeyInfo keyPress = Console.ReadKey();
+                switch (keyPress.Key)
+                {
+                    case ConsoleKey.DownArrow:
+                    case ConsoleKey.S:
+                        ++sourceTop;
+                        break;
+                    case ConsoleKey.RightArrow:
+                    case ConsoleKey.D:
+                        ++sourceLeft;
+                        break;
+                    case ConsoleKey.LeftArrow:
+                    case ConsoleKey.A:
+                        --sourceLeft;
+                        break;
+                    case ConsoleKey.UpArrow:
+                    case ConsoleKey.W:
+                        --sourceTop;
+                        break;
+                    case ConsoleKey.Escape:
+                        throw new Exception("_EXIT GAME");
+                        break;
+                }
             }
             return new Item(' ', sourceLeft, sourceTop);
         }
