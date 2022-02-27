@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Zmeyka
+﻿namespace Zmeyka
 {
     internal class Item
     {
@@ -19,11 +13,14 @@ namespace Zmeyka
             _y = y;
         }
 
-        public Item(int x, int y)
+        public Item(int poleSizeX, int poleSizeY)
         {
-            _type = ' ';
-            _x = x;
-            _y = y;
+            Random random = new Random();
+            int randomX = random.Next(1, poleSizeX - 1);
+            int randomY = random.Next(2, poleSizeY - 1);
+            _type = 'i';
+            _x = randomX;
+            _y = randomY;
         }
 
         public Item()
@@ -49,6 +46,20 @@ namespace Zmeyka
         {
             get => _y;
             set => _y = value;
-        }        
+        }
+
+        public void ShowItem()
+        {
+            Console.SetCursorPosition(this.X, this.Y);
+            Console.Write(this.Type);
+        }
+
+        public bool Equal(Item item1)
+        {
+            if (item1.X == this.X && item1.Y == this.Y)
+                return true;
+            else
+                return false;
+        }
     }
 }

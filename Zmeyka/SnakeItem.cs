@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Zmeyka
+﻿namespace Zmeyka
 {
     internal class SnakeItem : Item
     {
@@ -16,6 +10,11 @@ namespace Zmeyka
         public SnakeItem(char type, int x, int y) : base(type, x, y)
         {
 
+        }
+
+        public SnakeItem(int poleSizeX, int poleSizeY) : base(poleSizeX, poleSizeY)
+        {
+            Type = '@';
         }
     }
 }
